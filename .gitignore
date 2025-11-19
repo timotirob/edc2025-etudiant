@@ -1,0 +1,21 @@
+# --- Dépendances ---
+/vendor/
+
+# --- IDEs & Éditeurs (Pour couvrir PhpStorm et VS Code) ---
+.idea/
+.vscode/
+*.swp
+
+# --- Système (Mac / Windows) ---
+.DS_Store
+Thumbs.db
+
+# --- PHPUnit (Cache et rapports de couverture) ---
+.phpunit.cache/
+.phpunit.result.cache
+
+# --- Application LocAuto ---
+# On ignore les fichiers logs créés par l'application...
+var/*.log
+# ... mais on force le maintien du dossier "var" vide dans git
+!var/.gitkeep

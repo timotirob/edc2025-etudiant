@@ -1,0 +1,131 @@
+= TP : Sécurisation et Qualité Logicielle - "LocAuto Secure"
+:author: DSI LocAuto - Pôle Développement
+:revdate: Novembre 2025
+:toc: left
+:toc-title: Sommaire
+:icons: font
+:source-highlighter: highlight.js
+:sectnums:
+
+== 1. Contexte Professionnel
+
+Vous venez d'intégrer l'équipe de développement de **LocAuto Secure**, une entreprise spécialisée dans la location de véhicules longue durée.
+
+L'entreprise fait face à deux défis majeurs :
+1.  **Sécurité :** Des failles critiques ont été détectées (accès non contrôlés, absence de logs).
+2.  **Qualité :** Le code manque de tests unitaires et de documentation, ce qui provoque des régressions à chaque mise à jour.
+
+=== Votre Rôle
+En tant que développeur Back-end, votre mission est de **sécuriser l'existant**, d'**ajouter des tests unitaires** pour garantir la robustesse du code, et de **développer de nouvelles fonctionnalités** en respectant les normes de documentation (PHPDoc).
+
+== 2. Installation
+
+=== Prérequis
+* PHP 8.2 ou supérieur
+* Composer
+
+=== Initialisation
+Ouvrez un terminal à la racine du projet :
+
+[source,bash]
+----
+# Installation des dépendances
+composer install
+
+# Premier lancement des tests (Ils doivent échouer, c'est normal !)
+.\vendor\bin\phpunit --colors=always
+----
+
+== 3. Partie A : Sécurisation du Back-end
+
+=== Mission 1 : Gestion des Permissions (RBAC)
+**Objectif :** Empêcher les accès non autorisés.
+
+La classe `Utilisateur` possède une méthode `aLeDroit()` actuellement vide.
+Vous devez implémenter la logique qui vérifie si le **Poste** de l'utilisateur contient bien la **Permission** demandée.
+
+.Tâche :
+. Ouvrez `src/Entity/Utilisateur.php`.
+. Complétez la méthode `aLeDroit`.
+. Elle doit retourner `true` uniquement si la permission existe dans le poste de l'utilisateur.
+
+=== Mission 2 : Traçabilité (Logs)
+**Objectif :** Garantir la non-répudiation des actions critiques.
+
+Le service de sécurité exige que l'**Adresse IP** soit enregistrée dans les logs.
+
+.Tâche :
+. Ouvrez `src/Service/AuditLogger.php`.
+. Modifiez la méthode `logAction` pour accepter un paramètre `$ipClient` (string).
+. Intégrez cette IP dans le message final formaté : `[DATE] [IP] User:ID -> ACTION sur RESSOURCE`.
+
+=== Mission 3 : Protection de l'API
+**Objectif :** Combler une faille de type "Broken Access Control".
+
+Un stagiaire peut actuellement supprimer des véhicules via l'API sans en avoir le droit.
+
+.Tâche :
+. Ouvrez `src/Api/FlotteController.php`.
+. Dans la méthode `deleteVehicule`, ajoutez un contrôle de sécurité avant la suppression.
+. Utilisez `$this->db->verifierAutorisation(...)`.
+. Si l'utilisateur n'est pas autorisé, renvoyez un code HTTP **403 Forbidden**.
+
+== 4. Partie B : Tests Unitaires et Qualité
+
+Le directeur technique souhaite que le code soit couvert par des tests automatiques pour éviter les bugs futurs.
+
+=== Mission 4 : Tests d'Intégrité (Véhicule)
+**Objectif :** Vérifier qu'on ne peut pas corrompre les données métier.
+
+La classe `Vehicule` (dans `src/Entity/Vehicule.php`) interdit les kilométrages négatifs via une `InvalidArgumentException`. Vous devez prouver que cette protection fonctionne.
+
+.Tâche :
+. Créez le fichier `tests/VehiculeTest.php`.
+. Écrivez la classe `VehiculeTest` héritant de `TestCase`.
+. Implémentez deux tests :
+* `testCreationVehiculeValide` : Vérifie qu'on peut créer une voiture avec 100 km.
+* `testKilometrageNegatifInterdit` : Vérifie qu'une **Exception** est levée si on tente de créer une voiture avec -100 km.
+
+[TIP]
+====
+Utilisez `$this->expectException(InvalidArgumentException::class);` avant l'instruction qui doit échouer.
+====
+
+=== Mission 5 : Tests de Relations (Poste)
+**Objectif :** Valider l'ajout de permissions.
+
+La classe `Poste` permet d'ajouter des permissions. Nous devons nous assurer que la liste interne se met bien à jour.
+
+.Tâche :
+. Créez le fichier `tests/PosteTest.php`.
+. Écrivez un test qui :
+1. Instancie un objet `Poste`.
+2. Instancie et ajoute une `Permission` via la méthode `addPermission`.
+3. Utilise `assertCount(1, ...)` pour vérifier que le tableau des permissions contient bien 1 élément.
+
+== 5. Partie C : Développement et Documentation
+
+=== Mission 6 : Service Mot de Passe et PHPDoc
+**Objectif :** Coder une fonctionnalité documentée selon les standards professionnels.
+
+Vous devez créer un service utilitaire pour vérifier la robustesse des mots de passe. Le client exige une documentation technique stricte générable automatiquement.
+
+.Tâche :
+. Créez le fichier `src/Service/MotDePasseService.php`.
+. Créez une méthode statique `estRobuste(string $password): bool`.
+. Règle métier : le mot de passe doit faire **au moins 8 caractères**.
+. **Documentez la méthode** avec un bloc PHPDoc complet incluant :
+* La description de la fonction.
+* Le tag `@param` (type et description).
+* Le tag `@return` (type et description).
+
+== 6. Validation Finale
+
+Une fois toutes les missions terminées, lancez la suite de tests complète pour valider votre travail.
+
+[source,bash]
+----
+.\vendor\bin\phpunit --colors=always
+----
+
+Si tous les tests (Missions 1, 4, 5) sont verts et que votre démo (Missions 2, 3) fonctionne : **Félicitations, vous avez validé le module Qualité & Sécurité !**
