@@ -119,6 +119,33 @@ Vous devez créer un service utilitaire pour vérifier la robustesse des mots de
 * Le tag `@param` (type et description).
 * Le tag `@return` (type et description).
 
+=== Mission 7 : Algorithme de Maintenance (Tableaux & Boucles)
+**Objectif :** Manipuler des structures de données complexes (Objets imbriqués et Tableaux associatifs).
+
+Le gestionnaire de flotte souhaite anticiper les révisions des véhicules. Chaque marque de voiture possède une fréquence de révision différente (ex: Renault tous les 15 000 km, Peugeot tous les 20 000 km).
+
+Vous devez développer un service capable de scanner une Agence entière et de lister les véhicules à réviser.
+
+.Prérequis :
+* Ajoutez d'abord une classe simple `App\Entity\Agence` contenant une propriété privée `array $flotte` (une liste d'objets `Vehicule`) et son *getter* `getFlotte(): array`.
+
+.Tâche :
+. Ouvrez (ou créez) `src/Service/MaintenanceService.php`.
+. Ajoutez une méthode `genererAlertes(Agence $agence, array $criteres): array`.
+. **Logique à implémenter :**
+* La méthode reçoit un tableau associatif `$criteres` où la **clé** est la marque et la **valeur** est le kilométrage limite (ex: `["Renault" => 15000]`).
+* Vous devez parcourir tous les véhicules de l'agence (Navigation objet niveau 1).
+* Pour chaque véhicule, récupérez sa marque et son kilométrage (Navigation objet niveau 2).
+* Vérifiez si la marque existe dans le tableau associatif des critères.
+* Si oui, comparez le kilométrage : si le véhicule dépasse le seuil, ajoutez une phrase d'alerte dans un tableau de résultats.
+. **Documentation :** Ajoutez le bloc PHPDoc complet pour cette méthode (`@param`, `@return`).
+
+[TIP]
+====
+Exemple de structure du tableau `$criteres` attendu :
+`$seuils = ["Peugeot" => 10000, "Citroen" => 12000];`
+====
+
 == 6. Validation Finale
 
 Une fois toutes les missions terminées, lancez la suite de tests complète pour valider votre travail.
