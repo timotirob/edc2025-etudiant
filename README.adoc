@@ -12,6 +12,7 @@
 Vous venez d'intégrer l'équipe de développement de **LocAuto Secure**, une entreprise spécialisée dans la location de véhicules longue durée.
 
 L'entreprise fait face à deux défis majeurs :
+
 1.  **Sécurité :** Des failles critiques ont été détectées (accès non contrôlés, absence de logs).
 2.  **Qualité :** Le code manque de tests unitaires et de documentation, ce qui provoque des régressions à chaque mise à jour.
 
@@ -118,6 +119,7 @@ Vous devez créer un service utilitaire pour vérifier la robustesse des mots de
 * La description de la fonction.
 * Le tag `@param` (type et description).
 * Le tag `@return` (type et description).
+
 
 === Mission 7 : Algorithme de Maintenance (Tableaux & Boucles)
 **Objectif :** Manipuler des structures de données complexes (Objets imbriqués et Tableaux associatifs).

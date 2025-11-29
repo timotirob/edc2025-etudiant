@@ -24,6 +24,9 @@ class Utilisateur
      */
     public function aLeDroit(string $ressourceVisee, string $actionVisee): bool
     {
-        return false;
+        // TODO: Implémenter la logique de vérification des permissions (Mission 1)
+
+        // Au lieu de "return false", on lance une erreur explicite :
+        throw new \RuntimeException("Méthode non implémentée ! Au travail !");
     }
 }
