@@ -45,6 +45,10 @@ class FlotteController
 
         // --- ZONE À COMPLÉTER PAR L'ÉTUDIANT (Début) ---
 
+        if (! $this->db->verifierAutorisation($userId,"delete","Vehicule")) {
+            $this->jsonResponse(403, "Pas d'autorisation pour supprimer le vehicule");
+            return ;
+        }
 
         // --- ZONE À COMPLÉTER PAR L'ÉTUDIANT (Fin) ---
 

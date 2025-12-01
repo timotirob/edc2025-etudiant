@@ -24,7 +24,7 @@ echo "[INFO] Utilisateur connecté : Kevin (Stagiaire)\n";
 echo "\n--- TEST 1 : Logger avec IP ---\n";
 $logger = new AuditLogger();
 try {
-    $logger->logAction($stagiaire, 'delete', 'Vehicule', new DateTime());
+    $logger->logAction($stagiaire, '10.0.210.7','delete', 'Vehicule', new DateTime());
     echo "✅ Log OK (IP présente)\n";
 } catch (ArgumentCountError $e) {
     echo "❌ ERREUR : Le logger ne gère pas encore l'IP.\n";
@@ -50,7 +50,14 @@ if (str_contains($jsonOutput, '"code":403')) {
 // 4. Test Service Mot de Passe (Mission 6)
 echo "\n--- TEST 3 : Qualité Mot de Passe ---\n";
 $mdpFaible = "1234";
+
+if (\App\Service\MotDePasseService::estRobuste($mdpFaible)) echo "OK Mot de passe \n";
+else echo "KO Mot de passe \n";
+
 $mdpFort = "SuperSecret123";
+
+if (\App\Service\MotDePasseService::estRobuste($mdpFort)) echo "OK Mot de passe \n";
+else echo "KO Mot de passe \n";
 
 
 

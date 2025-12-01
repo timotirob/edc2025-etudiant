@@ -26,7 +26,13 @@ class Utilisateur
     {
         // TODO: Implémenter la logique de vérification des permissions (Mission 1)
 
+        foreach ($this->poste->getPermissions() as $permission) {
+            if ($permission->getAction() === $actionVisee && $permission->getRessource() === $ressourceVisee)
+            return true ;
+        }
+        return false;
+
         // Au lieu de "return false", on lance une erreur explicite :
-        throw new \RuntimeException("Méthode non implémentée ! Au travail !");
+       // throw new \RuntimeException("Méthode non implémentée ! Au travail !");
     }
 }

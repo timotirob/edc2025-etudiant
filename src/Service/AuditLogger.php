@@ -14,6 +14,7 @@ class AuditLogger
      */
     public function logAction(
         Utilisateur $user,
+        string $ipuser,
         string $action,
         string $ressource,
         DateTimeInterface $date
@@ -24,13 +25,14 @@ class AuditLogger
         $logLine = sprintf(
             "[%s] [%s] User:%d -> %s sur %s",
             $timestamp,
+            $ipuser,
             $user->getId(),
             $action,
             $ressource
         );
 
         // Simulation d'écriture fichier
-        // file_put_contents(__DIR__ . '/../../var/security.log', $logLine . PHP_EOL, FILE_APPEND);
+        file_put_contents(__DIR__ . '/../../var/security.log', $logLine . PHP_EOL, FILE_APPEND);
         echo "LOG ENREGISTRÉ : " . $logLine . PHP_EOL;
     }
 }
